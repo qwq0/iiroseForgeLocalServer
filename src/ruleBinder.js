@@ -27,6 +27,16 @@ serverBinder.addQueryRules({
             ok: RuleType.boolean()
         })
     },
+    traversalWriteJson: {
+        request: createEventRule({
+            filePath: RuleType.string(),
+            deleteTree: RuleType.string(),
+            json: RuleType.string()
+        }),
+        response: createEventRule({
+            ok: RuleType.boolean()
+        })
+    },
     readFile: {
         request: createEventRule({
             filePath: RuleType.string(),

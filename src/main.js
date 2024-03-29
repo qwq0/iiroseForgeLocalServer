@@ -20,9 +20,17 @@ let jsob = new JSOBin();
     });
 
     let server = new QwQSocketServer();
+    serverBinder.applyToInstance(server);
 
-    wsServer.on("connection", socket =>
+    wsServer.on("connection", (socket, request) =>
     {
+        let url = String(request.url);
+        if (!url.endsWith("/forgeLocalServer"))
+        {
+            socket.close();
+            return;
+        }
+        console.log("client connect");
         new Client(socket, server);
     });
     console.log(`forge local server start on port ${option.port}`);
