@@ -17,6 +17,27 @@ function pathLegitimization(srcPathName)
     })).join("/");
 }
 
+/**
+ * @param {string} filePath
+ * @param {any} thisClinet
+ */
+function broadcastFileChange(filePath, thisClinet)
+{
+    try
+    {
+        onlineClinetSet.forEach(o =>
+        {
+            if (o.client != thisClinet)
+                o.client.sendTrigger("fileChange", {
+                    filePath: filePath
+                });
+        });
+    }
+    catch (err)
+    {
+    }
+}
+
 serverBinder.setQueryProcessors({
     writeFile: async (/** @type {{ filePath: string, content: string }} */e, client) =>
     {
@@ -25,6 +46,7 @@ serverBinder.setQueryProcessors({
         {
             await fs.mkdir(path.dirname(pathName), { recursive: true });
             await fs.writeFile(pathName, e.content, { encoding: "utf-8" });
+            broadcastFileChange(e.filePath, client);
             return { ok: true };
         }
         catch (err)
@@ -94,6 +116,7 @@ serverBinder.setQueryProcessors({
 
             await fs.mkdir(path.dirname(pathName), { recursive: true });
             await fs.writeFile(pathName, JSON.stringify(originalObj), { encoding: "utf-8" });
+            broadcastFileChange(e.filePath, client);
 
             return { ok: true };
         }

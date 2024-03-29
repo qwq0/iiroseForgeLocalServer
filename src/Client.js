@@ -118,6 +118,7 @@ export class Client
             }
             catch (err)
             {
+                console.error("QwQ-socket error:", err);
                 this.close();
             }
         });
