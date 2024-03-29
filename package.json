@@ -1,0 +1,12 @@
+{
+    "type": "module",
+    "main": "./src/main.js",
+    "dependencies": {
+        "jsobin": "^1.2.2",
+        "qwq-socket": "^1.1.0",
+        "ws": "^8.16.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.30"
+    }
+}
