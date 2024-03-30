@@ -11,7 +11,7 @@ function pathLegitimization(srcPathName)
     let pathPart = srcPathName.split("/");
     return (pathPart.map(part =>
     {
-        if (!(/^[a-zA-Z0-9\.]+$/.test(part)))
+        if (!(/^[a-zA-Z0-9\-\_\.]+$/.test(part)))
             throw "file path error";
         return part;
     })).join("/");
@@ -46,6 +46,22 @@ serverBinder.setQueryProcessors({
         {
             await fs.mkdir(path.dirname(pathName), { recursive: true });
             await fs.writeFile(pathName, e.content, { encoding: "utf-8" });
+            broadcastFileChange(e.filePath, client);
+            return { ok: true };
+        }
+        catch (err)
+        {
+            console.error("write file error:", err);
+            return { ok: false };
+        }
+    },
+    appendWriteFile: async (/** @type {{ filePath: string, content: string }} */e, client) =>
+    {
+        let pathName = path.join("./data/", pathLegitimization(e.filePath));
+        try
+        {
+            await fs.mkdir(path.dirname(pathName), { recursive: true });
+            await fs.appendFile(pathName, e.content, { encoding: "utf-8" });
             broadcastFileChange(e.filePath, client);
             return { ok: true };
         }
