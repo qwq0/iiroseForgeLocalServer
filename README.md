@@ -44,3 +44,14 @@ pm2 update
 pm2 start ./src/main.js
 pm2 save
 ```
+
+## bash
+
+请使用带有管理员权限的终端
+
+```bash
+cd iiroseForgeLocalServer
+pm2 stop all
+git pull
+pm2 start all
+```
