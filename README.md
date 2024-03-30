@@ -45,7 +45,7 @@ pm2 start ./src/main.js
 pm2 save
 ```
 
-## bash
+## 更新
 
 请使用带有管理员权限的终端
 
